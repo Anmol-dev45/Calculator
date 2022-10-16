@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    
+}
+h1 {
+    margin-top: 50px;
+}
+
+.calculator{
+    display: flex;
+    flex-direction: column;
+    margin: 50px auto;
+    padding: 5px;
+    box-shadow: 10px 20px 40px black;
+    align-items: center;
+     width: 260px; 
+     height: 500px; 
+    border-radius: 8px;
+
+}
+.display {
+    height: 200px;
+    border: 2px solid rgb(0, 0, 0);
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 1px 7px 0  rgb(0, 0, 0);
+    align-items: flex-end;
+    justify-content: flex-end;
+    display: flex;
+    padding: 10px;
+    background-color: black;
+    border-bottom: none;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+
+}
+h2{
+    font-size: 35px;
+    color: #fff;
+    max-width: 100%;
+}
+.body{
+    width: 250px;
+    /* border: 2px solid rgb(74, 72, 72); */
+    border-top: none;
+    border-radius: 8px;
+    box-shadow: 0 1px 7px 0  rgb(0, 0, 0);
+    gap: 5px;
+    display: grid;
+    padding: 10px;
+    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(4, auto);
+    background-color: rgb(0, 0, 0);
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+
+}
+button {
+    font-size: 20px;
+    width: 50px;
+    height: 50px;
+    
+    background-color:rgb(90, 83, 83);
+    border-radius: 50%;
+    color: white;
+    /* border-color: rgb(90, 83, 83);    */
+}
+button:hover{
+    cursor: pointer;
+      transform: scale(1.1);
+}
+button[data-key="0"]{
+    grid-column-start: 1;
+  grid-column-end: 3;
+  width: 108px;
+  border-radius: 25px;
+}
+button[data-operator="="]{
+    grid-column-start: 3;
+  grid-column-end: 5;
+  width: 108px;
+  border-radius: 25px;
+}
+
+
+
+.bg-yellow{
+    background-color: rgb(255, 174, 0);
+}
+
+.bg-grey{
+    background-color: rgb(180, 166, 166);
+    color: black;
+}
