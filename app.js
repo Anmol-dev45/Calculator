@@ -1,120 +1,145 @@
-const buttons = document.querySelectorAll('button');
+const numberButtons = document.querySelectorAll('[data-key]');
+const operatorButtons = document.querySelectorAll('[data-operator]');
+const clearButton = document.querySelector('[data-clear]');
+const deleteButton = document.querySelector('[data-delete]');
+const calcButton = document.querySelector('[data-calc]');
+
 const output = document.querySelector('h2');
 
 
-buttons.forEach(button => {
-    button.addEventListener('click', dataEntry);
-})
 
-let result = 0;
-let arr = '';
 
-function dataEntry(event) {
-    let data = event.target.dataset;
-    let num = event.target.innerHTML;
 
-    if (data.operator == '=') {
-        calc();
+class Calculator {
+    constructor(output) {
+        this.output = output
 
-        console.log(arr)
-        return;
     }
-    if (data.key) {
-        if (!arr) {
+    operation(sign, x, y) {
+        switch (sign) {
 
-            result = 0
-            output.innerHTML = ''
+            case '+':
+                return x + y;
+                break;
+
+
+            case '-':
+                return x - y;
+                break;
+
+
+            case '*':
+                return x * y;
+                break;
+
+            case '÷':
+                return x / y;
+                break;
+
         }
-        arr += data.key
-        output.innerHTML += num;
+    }
+
+
+    clear() {
+
+        this.currentOperation = ''
+        this.output.innerHTML = ''
 
     }
-    if (data.operator) {
-        arr += " " + data.operator + " "
-        output.innerHTML += " " + num + " ";
 
+
+    appendNumber(number) {
+        if (number === '.' && this.currentOperation.includes('.')) return;
+        this.currentOperation = this.output.innerHTML + number;
     }
-    if (data.id) {
-        if (data.id == 'clear') {
-            arr = '';
-            result = 0
-            output.innerHTML = ''
-            console.log(arr)
+
+
+    appendOperator(operator) {
+        this.appendNumber(" " + operator + " ")
+    }
+
+
+    delete() {
+
+        if (this.currentOperation.toString().slice(-1) === ' ') {
+
+            this.currentOperation = this.currentOperation.toString().slice(0, -3);
+
             return
         }
-
+        this.currentOperation = this.currentOperation.toString().slice(0, -1);
 
 
     }
-}
-
-function add(a, b) {
-    return a + b;
-
-}
-function sub(a, b) {
-    return a - b;
-}
-function mult(a, b) {
-    return a * b;
-}
-function div(a, b) {
-    return a / b;
-}
 
 
+    updateOutput() {
+        this.output.innerHTML = this.currentOperation;
+    }
 
 
-function calc() {
+    calc() {
 
-    console.log(arr)
-    arr = arr.split(" ");
-    console.log(arr)
+        let j = 0
+        this.input = this.currentOperation.split(" ")
+        for (let i = 0; i < this.input.length; i++) {
 
-    for (let i = 0; i < arr.length; i++) {
-        if (!result) {
+            if (isNaN(+this.input[i])) {
+                if (!this.input[i + 1]) {
+                    this.clear()
+                    return;
+                }
 
-            if (arr[i] == '+') {
-                result = add(+arr[i - 1], +arr[i + 1]);
+                if (!j) {
+                    console.log(this.input[i + 1])
+                    this.currentOperation = this.operation(this.input[i], +this.input[i - 1], +this.input[i + 1])
+                }
+
+                else {
+                    this.currentOperation = this.operation(this.input[i], +this.currentOperation, +this.input[i + 1])
+
+
+                }
+                j++
             }
-            else if (arr[i] == '-') {
-                result = sub(+arr[i - 1], +arr[i + 1]);
-            }
-            else if (arr[i] == '*') {
-                result = mult(+arr[i - 1], +arr[i + 1]);
-            }
-            else if (arr[i] == '/') {
-                result = div(+arr[i - 1], +arr[i + 1]);
-            }
-            else {
-
-            }
-            console.log(result)
-        }
-
-        else {
-            if (arr[i] == '+') {
-                result = add(result, +arr[i + 1]);
-
-            }
-            else if (arr[i] == '-') {
-                result = sub(result, +arr[i + 1]);
-            }
-            else if (arr[i] == '*') {
-                result = mult(result, +arr[i + 1]);
-            }
-            else if (arr[i] == '/') {
-                result = div(result, +arr[i + 1]);
-
-            }
-            else { }
-            console.log(result)
         }
     }
-    arr = '';
-    result = result.toFixed(1);
-    output.innerHTML = result
-    // result = 0
 }
 
 
+const calculator = new Calculator(output)
+
+
+
+
+
+numberButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        // calculator.clear()
+        calculator.appendNumber(button.innerHTML)
+        calculator.updateOutput();
+    });
+})
+operatorButtons.forEach(button => {
+    button.addEventListener('click', () => {
+
+        calculator.appendOperator(button.innerHTML)
+        calculator.updateOutput();
+    });
+})
+
+
+clearButton.addEventListener('click', () => {
+    calculator.clear()
+    calculator.updateOutput()
+})
+
+calcButton.addEventListener('click', () => {
+    calculator.calc()
+    calculator.updateOutput()
+})
+
+deleteButton.addEventListener('click', () => {
+    calculator.delete();
+    calculator.updateOutput()
+})
